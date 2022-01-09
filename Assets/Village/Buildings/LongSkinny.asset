@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ba596fe9ccb8b849be817bfb7700892, type: 3}
+  m_Name: LongSkinny
+  m_EditorClassIdentifier: 
+  nameString: LongSkinny
+  prefab: {fileID: 6570013989547619879, guid: 7b3fb6aa01b2b05499bedf0c7b5422ec, type: 3}
+  visual: {fileID: 1542502072602759919, guid: 80ce74f44bae9b04cb0f4b0c076b2fd2, type: 3}
+  width: 4
+  height: 1
+  isMultiDeck: 0
+  additionalDecks: 0
+  woodCost: 45
+  metalCost: 30
+  waterCost: 10
+  foodCost: 15
+  weight: 5
