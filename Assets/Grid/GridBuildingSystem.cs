@@ -104,7 +104,9 @@ public class GridBuildingSystem : MonoBehaviour
         PlayerInput.OnLeftClickEvent += Instance_OnLeftClickEvent;
         PlayerInput.OnRightClickEvent += Instance_OnRightClickEvent;
         enabled = m_isActive;
-        grid = new Grid<GridObject>(gridWidth, gridHeight, gridScale, gridOrigin, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), true);
+
+        Collider deckCollider = GameObject.Find("Deck").GetComponent<MeshCollider>();
+        grid = new Grid<GridObject>(gridWidth, gridHeight, gridScale, deckCollider.bounds.min, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), true);
     }
 
     private void Instance_OnLeftClickEvent(object sender, PlayerInput.OnLeftClickArgs e) {

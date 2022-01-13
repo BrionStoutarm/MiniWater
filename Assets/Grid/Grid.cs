@@ -37,7 +37,7 @@ public class Grid<TGridObject> {
         //Debug
         if (debugMode) {
             debugTextArray = new TextMesh[width, height];
-            for (int x = 0; x < gridArray.GetLength(0) ; x++) {
+            for (int x = 0; x < gridArray.GetLength(0); x++) {
                 for (int z = 0; z < gridArray.GetLength(1); z++) {
                     debugTextArray[x, z] = StaticFunctions.CreateWorldText(gridArray[x, z].ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize / 2, 0, cellSize / 2), 8, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z + 1), Color.white, 100f);
@@ -76,7 +76,7 @@ public class Grid<TGridObject> {
     }
 
     public void SetGridObject(int x, int z, TGridObject value) {
-        if (x >= 0 && z >= 0 && x < width && z < height) { 
+        if (x >= 0 && z >= 0 && x < width && z < height) {
             gridArray[x, z] = value;
             if (debugMode) {
                 debugTextArray[x, z].text = gridArray[x, z].ToString();
