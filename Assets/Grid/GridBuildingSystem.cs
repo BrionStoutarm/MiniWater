@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    public int gridWidth, gridHeight;
+    public int gridDensity;
     public Vector3 gridOrigin;
     public float gridScale;
 
@@ -105,8 +105,7 @@ public class GridBuildingSystem : MonoBehaviour
         PlayerInput.OnRightClickEvent += Instance_OnRightClickEvent;
         enabled = m_isActive;
 
-        Collider deckCollider = GameObject.Find("Deck").GetComponent<MeshCollider>();
-        grid = new Grid<GridObject>(gridWidth, gridHeight, gridScale, deckCollider.bounds.min, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), true);
+        CreateDeckGrid();
     }
 
     private void Instance_OnLeftClickEvent(object sender, PlayerInput.OnLeftClickArgs e) {
@@ -165,6 +164,17 @@ public class GridBuildingSystem : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void CreateDeckGrid() {
+        Collider deckCollider = GameObject.Find("Deck").GetComponent<MeshCollider>();
+        Vector3 lowerLeft = deckCollider.bounds.min;
+        Vector3 upperRight = deckCollider.bounds.max;
+
+        int gridWidth = (int)(upperRight.x - lowerLeft.x);
+        int gridHeight = (int)(upperRight.z - lowerLeft.z);
+
+        grid = new Grid<GridObject>(gridWidth, gridHeight, gridScale, gridDensity, deckCollider.bounds.min, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), true);
     }
 
     private void Instance_OnRightClickEvent(object sender, PlayerInput.OnRightClickArgs e) {

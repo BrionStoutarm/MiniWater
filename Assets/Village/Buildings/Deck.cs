@@ -28,7 +28,7 @@ public class Deck {
         int gridHeight = gridSize.y * gridScale;
         float cellSize = 10f / gridScale; // bad, will need to un-hardcode this
 
-        deckGrid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), GameManager.Instance.OnDebug());
+        //deckGrid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, origin, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), GameManager.Instance.OnDebug());
 
         this.deckObject = deckObject;
         originalScale = deckObject.transform.localScale;

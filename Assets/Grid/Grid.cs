@@ -21,13 +21,13 @@ public class Grid<TGridObject> {
     private Vector3 originPosition;
     private TGridObject[,] gridArray;
 
-    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject, bool debugMode) {
+    public Grid(int width, int height, float cellSize, int multiplier, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject, bool debugMode) {
         this.width = width;
         this.height = height;
-        this.cellSize = cellSize;
+        this.cellSize = cellSize / multiplier;
         this.originPosition = originPosition;
 
-        gridArray = new TGridObject[width, height];
+        gridArray = new TGridObject[width * multiplier, height * multiplier];
         for (int x = 0; x < gridArray.GetLength(0); x++) {
             for (int z = 0; z < gridArray.GetLength(1); z++) {
                 gridArray[x, z] = createGridObject(this, x, z);
@@ -36,10 +36,10 @@ public class Grid<TGridObject> {
 
         //Debug
         if (debugMode) {
-            debugTextArray = new TextMesh[width, height];
+            debugTextArray = new TextMesh[width * multiplier, height * multiplier];
             for (int x = 0; x < gridArray.GetLength(0); x++) {
                 for (int z = 0; z < gridArray.GetLength(1); z++) {
-                    debugTextArray[x, z] = StaticFunctions.CreateWorldText(gridArray[x, z].ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize / 2, 0, cellSize / 2), 8, TextAnchor.MiddleCenter);
+                    debugTextArray[x, z] = StaticFunctions.CreateWorldText(gridArray[x, z].ToString(), null, GetWorldPosition(x, z) + new Vector3(cellSize / 2 / multiplier, 0, cellSize / 2 / multiplier), 8, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x + 1, z), Color.white, 100f);
                 }
