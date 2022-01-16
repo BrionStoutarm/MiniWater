@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuildingPlacedObject : PlacedObject
 {
-    public static BuildingPlacedObject CreateBuilding(Vector3 worldPosition, Vector2Int origin, PlaceableScriptableObject.Dir dir, BuildingPlaceableScriptableObject placeableType) {
+    public static BuildingPlacedObject CreateBuilding(Vector3 worldPosition, Vector2Int origin, PlaceableScriptableObject.Dir dir, BuildingPlaceableScriptableObject placeableType, int cellScale) {
         Transform placedObjectTransform = Instantiate(placeableType.prefab, worldPosition, Quaternion.Euler(0, placeableType.GetRotationAngle(dir), 0));
 
         BuildingPlacedObject placedObject = placedObjectTransform.GetComponent<BuildingPlacedObject>();
@@ -13,6 +13,7 @@ public class BuildingPlacedObject : PlacedObject
         placedObject.origin = origin;
         placedObject.dir = dir;
         placedObject.originalScale = placeableType.prefab.localScale;
+        placedObject.gridDensity = cellScale;
 
         return placedObject;
     }

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: LongSkinny
   m_EditorClassIdentifier: 
   nameString: LongSkinny
-  prefab: {fileID: 6570013989547619879, guid: 7b3fb6aa01b2b05499bedf0c7b5422ec, type: 3}
-  visual: {fileID: 1542502072602759919, guid: 80ce74f44bae9b04cb0f4b0c076b2fd2, type: 3}
+  prefab: {fileID: 6570013989547619879, guid: 1a4b0b12027ea3f4282d8183fd886db9, type: 3}
+  visual: {fileID: 1542502072602759919, guid: 8f570be72bb3b104dbfe9824f37fadbd, type: 3}
   width: 4
   height: 1
   isMultiDeck: 0

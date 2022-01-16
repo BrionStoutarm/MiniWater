@@ -35,7 +35,7 @@ public class GridBuildingSystem : MonoBehaviour
         public Vector2Int gridPosition;
     }
 
-    private bool m_isActive = false;
+    private bool m_isActive = true;
 
     public static GridBuildingSystem Instance {
         get => s_instance;
@@ -45,25 +45,39 @@ public class GridBuildingSystem : MonoBehaviour
         }
     }
 
+    public bool HasCurrentBuildingSelected() {
+        return currentPlaceBuilding != null;
+    }
+
+    private void OnEnable() {
+        if (OnBuildingSysActive != null) { OnBuildingSysActive(this, new OnBuildingSysActiveArgs { active = true });  }
+    }
+
+    private void OnDisable() {
+        if (OnBuildingSysActive != null) { OnBuildingSysActive(this, new OnBuildingSysActiveArgs { active = false }); }
+    }
+
     public Vector3 GetMouseWorldSnappedPosition() {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if(enabled) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        RaycastHit hit;
+            RaycastHit hit;
 
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
-            Vector3 hitPoint = hit.point;
-            grid.GetXZ(hitPoint, out int x, out int z);
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)) {
+                Vector3 hitPoint = hit.point;
+                grid.GetXZ(hitPoint, out int x, out int z);
 
-            Vector2Int rotationOffset = currentPlaceBuilding.GetRotationOffset(dir);
-            Vector3 placeObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y);
+                Vector2Int rotationOffset = currentPlaceBuilding.GetRotationOffset(dir, gridDensity);
+                Vector3 placeObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y);
 
-            return placeObjectWorldPosition;
+                return placeObjectWorldPosition;
+            }
         }
         return Vector3.zero;
     }
 
     public void toggleActive() {
-        m_isActive = !m_isActive;
+        enabled = true;
     }
 
     public bool isActive() {
@@ -125,7 +139,7 @@ public class GridBuildingSystem : MonoBehaviour
 
                 grid.GetXZ(hitPoint, out int x, out int z);
 
-                List<Vector2Int> gridPositionList = currentPlaceBuilding.GetGridPositionList(new Vector2Int(x, z), dir);
+                List<Vector2Int> gridPositionList = currentPlaceBuilding.GetGridPositionList(new Vector2Int(x, z), dir, gridDensity);
 
 
                 //Test can build 
@@ -145,12 +159,12 @@ public class GridBuildingSystem : MonoBehaviour
 
                 GridObject gridObject = grid.GetGridObject(x, z);
                 if (canBuild) {
-                    Vector2Int buildingRotationOffset = currentPlaceBuilding.GetRotationOffset(dir);
+                    Vector2Int buildingRotationOffset = currentPlaceBuilding.GetRotationOffset(dir, gridDensity);
                     Vector3 placeObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(buildingRotationOffset.x, 0, buildingRotationOffset.y);
                     placeObjectWorldPosition.y = hitPoint.y;
 
                     
-                    BuildingPlacedObject placedObject = BuildingPlacedObject.CreateBuilding(placeObjectWorldPosition, new Vector2Int(x, z), dir, currentPlaceBuilding);
+                    BuildingPlacedObject placedObject = BuildingPlacedObject.CreateBuilding(placeObjectWorldPosition, new Vector2Int(x, z), dir, currentPlaceBuilding, gridDensity);
                     foreach (Vector2Int gridPosition in gridPositionList) {
                         grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
                     }
@@ -174,58 +188,39 @@ public class GridBuildingSystem : MonoBehaviour
         int gridWidth = (int)(upperRight.x - lowerLeft.x);
         int gridHeight = (int)(upperRight.z - lowerLeft.z);
 
-        grid = new Grid<GridObject>(gridWidth, gridHeight, gridScale, gridDensity, deckCollider.bounds.min, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), true);
+        grid = new Grid<GridObject>(gridWidth, gridHeight, gridScale, gridDensity, deckCollider.bounds.min, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), GameManager.Instance.OnDebug());
     }
 
     private void Instance_OnRightClickEvent(object sender, PlayerInput.OnRightClickArgs e) {
         Instance.HandleRightClick(e.worldPosition);
     }
     private void HandleRightClick(Vector3 mousePosition) {
-        if(enabled) {
-            //Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-
-            //RaycastHit hit;
-
-            //if (Physics.Raycast(Camera.main.ScreenPointToRay(mousePosition), out hit)) {
-            //    Vector3 hitPoint = hit.point;
-            //    activeDeck.DeckGrid().GetXZ(hitPoint, out int x, out int z);
-
-            //    GridObject gridObject = activeDeck.DeckGrid().GetGridObject(x, z);
-            //    PlacedObject placedObject = gridObject.GetPlacedObject();
-            //    if (placedObject != null) {
-            //        placedObject.DestroySelf();
-
-            //        List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
-
-            //        foreach (Vector2Int gridPosition in gridPositionList) {
-            //            activeDeck.DeckGrid().GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
-            //        }
-            //    }
-            //}
-        }
+        currentPlaceBuilding = null;
+        enabled = false;
     }
 
     private void Update() {
         //Rotate current placing building
-        if (Input.GetKeyDown(KeyCode.R)) {
-            dir = PlaceableScriptableObject.GetNextDir(dir);
-            Debug.Log(dir);
+        if(enabled) {
+            if (Input.GetKeyDown(KeyCode.R)) {
+                dir = PlaceableScriptableObject.GetNextDir(dir);
+                Debug.Log(dir);
+            }
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha1)) { 
+        if(Input.GetKeyDown(KeyCode.Alpha1)) {
+            enabled = true;
             currentPlaceBuilding = buildingTypeList[0]; 
             if (OnSelectedBuildingChanged != null) OnSelectedBuildingChanged(this, new OnSelectedBuildingChangedArgs { });
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) { 
+        if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            enabled = true;
             currentPlaceBuilding = buildingTypeList[1];
             if (OnSelectedBuildingChanged != null) OnSelectedBuildingChanged(this, new OnSelectedBuildingChangedArgs { });
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3)) { 
+        if (Input.GetKeyDown(KeyCode.Alpha3)) {
+            enabled = true;
             currentPlaceBuilding = buildingTypeList[2];
-            if (OnSelectedBuildingChanged != null) OnSelectedBuildingChanged(this, new OnSelectedBuildingChangedArgs { });
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4)) {
-            currentPlaceBuilding = buildingTypeList[3];
             if (OnSelectedBuildingChanged != null) OnSelectedBuildingChanged(this, new OnSelectedBuildingChangedArgs { });
         }
     }

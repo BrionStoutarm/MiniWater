@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BigSquare
   m_EditorClassIdentifier: 
   nameString: BigSquare
-  prefab: {fileID: 7241139017237830300, guid: 7f3d039245204cc4abacb6009b926f0b, type: 3}
-  visual: {fileID: 8727802490995396343, guid: 6d00e63287465ea4ca216e19624d50b3, type: 3}
+  prefab: {fileID: 7241139017237830300, guid: 59283c873cdaa2e44b5dd0360f10849e, type: 3}
+  visual: {fileID: 8727802490995396343, guid: 4a4fe121133e62844acbafaa29845023, type: 3}
   width: 2
   height: 2
   isMultiDeck: 0

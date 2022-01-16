@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class PlacedObject : MonoBehaviour
 {
-    public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, PlaceableScriptableObject.Dir dir, PlaceableScriptableObject placeableType, int cellScale) {
+    public static PlacedObject Create(Vector3 worldPosition, Vector2Int origin, PlaceableScriptableObject.Dir dir, PlaceableScriptableObject placeableType, int gridDensity) {
         Transform placedObjectTransform = Instantiate(placeableType.prefab, worldPosition, Quaternion.Euler(0, placeableType.GetRotationAngle(dir), 0));
 
         PlacedObject placedObject = placedObjectTransform.GetComponent<PlacedObject>();
@@ -14,7 +14,7 @@ public class PlacedObject : MonoBehaviour
         placedObject.origin = origin;
         placedObject.dir = dir;
         placedObject.originalScale = placeableType.prefab.localScale;
-        placedObject.cellScale = cellScale;
+        placedObject.gridDensity = gridDensity;
 
         return placedObject;
     }
@@ -23,10 +23,10 @@ public class PlacedObject : MonoBehaviour
     protected Vector2Int origin;
     protected PlaceableScriptableObject.Dir dir;
     protected Vector3 originalScale;
-    protected int cellScale; //grid sizes are gonna be 8x10, 16x20, etc.  cellScale will just be 1, 2, etc to correspond with grid scale
+    protected int gridDensity; //grid sizes are gonna be 8x10, 16x20, etc.  cellScale will just be 1, 2, etc to correspond with grid scale
 
     public List<Vector2Int> GetGridPositionList() {
-        return placeableType.GetGridPositionList(origin, dir);
+        return placeableType.GetGridPositionList(origin, dir, gridDensity);
     }
 
     public void DestroySelf() {

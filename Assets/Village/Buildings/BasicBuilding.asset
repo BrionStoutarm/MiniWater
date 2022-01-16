@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BasicBuilding
   m_EditorClassIdentifier: 
   nameString: BasicBuilding
-  prefab: {fileID: 570854674442227989, guid: 3c044c8a6f31c0a4fb44175ed1934db7, type: 3}
-  visual: {fileID: 3444159564552651629, guid: c2fa1a6814b2a4b43823be9a7eb08392, type: 3}
+  prefab: {fileID: 570854674442227989, guid: bcc4bf70cd5b746418843e7a0d2ab310, type: 3}
+  visual: {fileID: 3444159564552651629, guid: db2f96a648c7c604ead12e1b64ce1c3a, type: 3}
   width: 1
   height: 1
   isMultiDeck: 0
