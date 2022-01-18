@@ -81,7 +81,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     public bool isActive() {
-        return m_isActive;
+        return enabled;
     }
 
     public PlaceableScriptableObject GetPlacedObjectType() {
@@ -120,10 +120,11 @@ public class GridBuildingSystem : MonoBehaviour
         enabled = m_isActive;
 
         CreateDeckGrid();
+        enabled = false;
     }
 
     private void Instance_OnLeftClickEvent(object sender, PlayerInput.OnLeftClickArgs e) {
-        Instance.HandleLeftClick(e.worldPosition);
+        Instance.HandleLeftClick(Input.mousePosition);
     }
 
     private void HandleLeftClick(Vector3 mousePosition) {
@@ -192,7 +193,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void Instance_OnRightClickEvent(object sender, PlayerInput.OnRightClickArgs e) {
-        Instance.HandleRightClick(e.worldPosition);
+        Instance.HandleRightClick(Input.mousePosition);
     }
     private void HandleRightClick(Vector3 mousePosition) {
         currentPlaceBuilding = null;

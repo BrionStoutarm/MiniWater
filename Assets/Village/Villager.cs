@@ -6,23 +6,18 @@ using UnityEngine.AI;
 public class Villager : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
-    public Transform goal;
+    public Vector3 goal;
     public Transform homeLocation;
 
     // Start is called before the first frame update
     void Start()
     {
-        goal = null;
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(goal != null) {
-            if (goal.position != navMeshAgent.destination)
-                SetDestination(goal);   
-        }
     }
 
     private void DoTask() {
@@ -30,21 +25,21 @@ public class Villager : MonoBehaviour
     }
 
     // Assign will have a task as well
-    public void Assign(Transform goal/*, Task task*/) {
+    public void Assign(Vector3 goal/*, Task task*/) {
         SetDestination(goal);
     }
 
-    private void SetDestination(Transform destination) {
-        navMeshAgent.destination = destination.position;
+    private void SetDestination(Vector3 destination) {
+        navMeshAgent.destination = destination;
     }
 
     public class Task {
         string name;
         float duration;
-        Transform location;
+        Vector3 location;
         Villager worker;
 
-        public Task(string name, float duration, Transform location, Villager worker) {
+        public Task(string name, float duration, Vector3 location, Villager worker) {
             this.name = name;
             this.duration = duration;
             this.location = location;

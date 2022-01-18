@@ -15,11 +15,15 @@ public class VillageManager : MonoBehaviour {
     public Villager villagerPrefab;
     public List<Villager> villagerList;
 
+    private Villager selectedVillager;
+    private BuildingPlacedObject selectedBuilding;
     private Queue<Villager> inactiveVillagers;
 
     public int foodConsumptionModifier = 1;
     public int waterConsumptionModifier = 2;
 
+    public event EventHandler<OnVillagerSelectedArgs> OnVillagerSelectedEvent;
+    public class OnVillagerSelectedArgs : EventArgs { }
 
     public event EventHandler<OnResourceAmountChangeArgs> OnResourceAmountChange;
     public class OnResourceAmountChangeArgs : EventArgs {
@@ -51,6 +55,9 @@ public class VillageManager : MonoBehaviour {
 
         GridBuildingSystem.Instance.OnPlacedBuilding += HandlePlacedBuilding;
         GameManager.Instance.TimeStepEvent += ConsumeVillagerResources;
+        PlayerInput.OnObjectSelectedEvent += HandleSelectedObject;
+        PlayerInput.OnLeftClickEvent += HandleLeftClickEvent;
+        PlayerInput.OnRightClickEvent += HandleRightClickEvent;
     }
 
     // Start is called before the first frame update
@@ -62,7 +69,6 @@ public class VillageManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-       
     }
 
     public static void CreateVillager() {
@@ -72,7 +78,7 @@ public class VillageManager : MonoBehaviour {
     }
 
     //will be triggered by a button on each building 
-    public void AssignVillagers(int numberOfVillagers, Transform goal) {
+    public void AssignVillagers(int numberOfVillagers, Vector3 goal) {
         for(int i = 0; i < numberOfVillagers; i++) {
             if (inactiveVillagers.Count == 0)
                 break;
@@ -95,6 +101,35 @@ public class VillageManager : MonoBehaviour {
         metalSupply -= args.placedObject.metalCost;
 
         if (OnResourceAmountChange != null) { OnResourceAmountChange(this, new OnResourceAmountChangeArgs { foodSupply = foodSupply, waterSupply = waterSupply, woodSupply = woodSupply, metalSupply = metalSupply }) ; }
+    }
+
+    void HandleLeftClickEvent(object sender, PlayerInput.OnLeftClickArgs args) {
+        if (selectedBuilding != null)
+            selectedBuilding = null;
+
+        if (selectedVillager != null)
+            selectedVillager = null;
+    }
+
+    void HandleRightClickEvent(object sender, PlayerInput.OnRightClickArgs args) {
+        Debug.Log("in r click event");
+        if(selectedVillager != null) {
+            Vector3 point = StaticFunctions.GetMouseRaycastHit().point;
+            Debug.Log("assign to: " + point);
+            selectedVillager.Assign(StaticFunctions.GetMouseRaycastHit().point);
+        }
+    }
+
+    void HandleSelectedObject(object sender, PlayerInput.OnObjectSelectedArgs args) {
+        GameObject obj = args.obj;
+        if(obj.transform.parent.GetComponent("Villager") != null) {
+            Debug.Log("Selected Villager");
+            if (OnVillagerSelectedEvent != null) { OnVillagerSelectedEvent(this, new OnVillagerSelectedArgs { }); }
+            selectedVillager = obj.transform.parent.GetComponent<Villager>();
+        }
+        if (obj.transform.parent.GetComponent("BuildingPlacedObject") != null) {
+            Debug.Log("Selected Building");
+        }
     }
 
     void UpdateUI() {
