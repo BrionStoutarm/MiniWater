@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae300ff85f1c6264a85076dc76484d3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isUiLoaded: 0
 --- !u!114 &596655489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mainCamera: {fileID: 0}
-  moveSpeed: 10
+  moveSpeed: 20
   m_cameraLeft: 97
   m_cameraRight: 100
   m_cameraUp: 119
@@ -592,7 +593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebeede3cd714044595af5654ba1c7fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_debugMode: 0
+  m_debugMode: 1
   m_showWind: 0
 --- !u!1 &1394927356
 GameObject:
@@ -669,6 +670,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {x: 0, y: 0, z: 0}
   homeLocation: {fileID: 0}
+  villagerUIPrefab: {fileID: 0}
 --- !u!4 &1405823640
 Transform:
   m_ObjectHideFlags: 0

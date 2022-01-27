@@ -3,28 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     [SerializeField] bool m_debugMode;
-    //public GameObject m_playerPrefab;
-   // public GameObject m_sailIndicatorPrefab;
-    //public GameObject m_windGaugePrefab;
-    //public GameObject m_aiBoat;
 
-    //public GameObject m_playerBoat;
-    //private SailIndicator m_sailIndicator;
-    //private WindGauge m_windGauge;
-    
-    //public WeatherManager m_weatherManager;
-    //public PlayerBoatControl m_playerBoatControl;
-    //public AIBoatControl m_aiBoatControl;
-    //public WaypointGraph m_waypoints;
-
-    //public float m_turnLength = 1.0f;
     public bool m_showWind = true;
-
-    //private bool m_paused = false;
-    //private bool m_advancingTurn = false;
 
     private static GameManager s_instance;
 
@@ -86,4 +68,5 @@ public class GameManager : MonoBehaviour
     public void ToggleBuildSystem() {
         GridBuildingSystem.Instance.toggleActive();
     }
+
 }

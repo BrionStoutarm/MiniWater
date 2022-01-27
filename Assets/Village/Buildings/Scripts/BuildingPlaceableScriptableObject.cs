@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BuildingPlaceableScriptableObject", menuName = "ScriptableObjects/BuildingType")]
 public class BuildingPlaceableScriptableObject : PlaceableScriptableObject
 {
-    public int woodCost, metalCost, waterCost, foodCost;
-    public int weight;
+    public int cost;
+
+    public Job buildingJob;
 }

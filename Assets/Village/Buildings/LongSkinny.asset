@@ -15,8 +15,8 @@ MonoBehaviour:
   nameString: LongSkinny
   prefab: {fileID: 6570013989547619879, guid: 1a4b0b12027ea3f4282d8183fd886db9, type: 3}
   visual: {fileID: 1542502072602759919, guid: 8f570be72bb3b104dbfe9824f37fadbd, type: 3}
-  width: 4
-  height: 1
+  width: 20
+  height: 5
   isMultiDeck: 0
   additionalDecks: 0
   woodCost: 45

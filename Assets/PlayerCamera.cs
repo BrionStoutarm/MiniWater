@@ -40,10 +40,14 @@ public class PlayerCamera : MonoBehaviour
             m_mainCamera.transform.Translate(m_mainCamera.transform.right * moveSpeed * Time.deltaTime, Space.World);
         }
         if (Input.GetKey(m_cameraDown)) {
-            m_mainCamera.transform.Translate(-m_mainCamera.transform.forward * moveSpeed * Time.deltaTime, Space.World);
+            Vector3 dest = -m_mainCamera.transform.forward;
+            dest.y = 0;
+            m_mainCamera.transform.Translate(dest * moveSpeed * Time.deltaTime, Space.World);
         }
         if (Input.GetKey(m_cameraUp)) {
-            m_mainCamera.transform.Translate(m_mainCamera.transform.forward * moveSpeed * Time.deltaTime, Space.World);
+            Vector3 dest = m_mainCamera.transform.forward;
+            dest.y = 0;
+            m_mainCamera.transform.Translate(dest * moveSpeed * Time.deltaTime, Space.World);
         }
     }
 

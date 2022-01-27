@@ -8,11 +8,14 @@ public class Villager : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     public Vector3 goal;
     public Transform homeLocation;
-
+    public SelectedVillagerUI villagerUIPrefab;
+    private SelectedVillagerUI uiInstance;
     // Start is called before the first frame update
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        //uiInstance = Instantiate(villagerUIPrefab);
+        //uiInstance.enabled = false;
     }
 
     // Update is called once per frame
@@ -22,6 +25,15 @@ public class Villager : MonoBehaviour
 
     private void DoTask() {
         
+    }
+
+    public void showUi(Vector3 location) {
+        //uiInstance.transform.position = location;
+        //uiInstance.enabled = true;
+    }
+
+    public void onUnselect() {
+        //uiInstance.enabled = false;
     }
 
     // Assign will have a task as well

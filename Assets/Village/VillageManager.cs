@@ -22,8 +22,15 @@ public class VillageManager : MonoBehaviour {
     public int foodConsumptionModifier = 1;
     public int waterConsumptionModifier = 2;
 
+    public event EventHandler<OnBuildingSelectedArgs> OnBuildingSelectedEvent;
+    public class OnBuildingSelectedArgs : EventArgs {
+        public BuildingPlacedObject selectedBuilding;
+    }
+
     public event EventHandler<OnVillagerSelectedArgs> OnVillagerSelectedEvent;
-    public class OnVillagerSelectedArgs : EventArgs { }
+    public class OnVillagerSelectedArgs : EventArgs {
+        public Villager selectedVillager;
+    }
 
     public event EventHandler<OnResourceAmountChangeArgs> OnResourceAmountChange;
     public class OnResourceAmountChangeArgs : EventArgs {
@@ -95,10 +102,10 @@ public class VillageManager : MonoBehaviour {
     }
 
     void HandlePlacedBuilding(object sender, GridBuildingSystem.OnPlacedBuildingArgs args) {
-        foodSupply -= args.placedObject.foodCost;
-        waterSupply -= args.placedObject.waterCost;
-        woodSupply -= args.placedObject.woodCost;
-        metalSupply -= args.placedObject.metalCost;
+        foodSupply -= args.placedObject.cost;
+        waterSupply -= args.placedObject.cost;
+        woodSupply -= args.placedObject.cost;
+        metalSupply -= args.placedObject.cost;
 
         if (OnResourceAmountChange != null) { OnResourceAmountChange(this, new OnResourceAmountChangeArgs { foodSupply = foodSupply, waterSupply = waterSupply, woodSupply = woodSupply, metalSupply = metalSupply }) ; }
     }
@@ -112,10 +119,12 @@ public class VillageManager : MonoBehaviour {
     }
 
     void HandleRightClickEvent(object sender, PlayerInput.OnRightClickArgs args) {
-        Debug.Log("in r click event");
         if(selectedVillager != null) {
-            Vector3 point = StaticFunctions.GetMouseRaycastHit().point;
-            Debug.Log("assign to: " + point);
+            RaycastHit hit = StaticFunctions.GetMouseRaycastHit();
+            BuildingPlacedObject building = hit.collider.gameObject.transform.parent.GetComponent<BuildingPlacedObject>();
+            if (building != null) {
+                building.AssignVillager(selectedVillager);
+            }
             selectedVillager.Assign(StaticFunctions.GetMouseRaycastHit().point);
         }
     }
@@ -124,36 +133,11 @@ public class VillageManager : MonoBehaviour {
         GameObject obj = args.obj;
         if(obj.transform.parent.GetComponent("Villager") != null) {
             Debug.Log("Selected Villager");
-            if (OnVillagerSelectedEvent != null) { OnVillagerSelectedEvent(this, new OnVillagerSelectedArgs { }); }
             selectedVillager = obj.transform.parent.GetComponent<Villager>();
+            if (OnVillagerSelectedEvent != null) { OnVillagerSelectedEvent(this, new OnVillagerSelectedArgs { selectedVillager = selectedVillager }); }
         }
         if (obj.transform.parent.GetComponent("BuildingPlacedObject") != null) {
             Debug.Log("Selected Building");
-        }
-    }
-
-    void UpdateUI() {
-        Canvas uiCanvas = FindObjectOfType<Canvas>();
-        if (uiCanvas == null) {
-            Debug.Log("no canvas");
-            return;
-        }
-
-        string newFoodSupplyAmount = foodSupply.ToString();
-        string newWaterSupplyAmount = waterSupply.ToString();
-
-        GameObject foodTextObject = GameObject.Find("FoodSupplyUIText");
-        Text foodText = foodTextObject.GetComponent<Text>();
-
-        if (foodText != null) {
-            foodText.text = "Food Supply: " + newFoodSupplyAmount;
-        }
-
-        GameObject waterTextObject = GameObject.Find("WaterSupplyUIText");
-        Text waterText = waterTextObject.GetComponent<Text>();
-
-        if (waterText != null) {
-            waterText.text = "Water Supply: " + newWaterSupplyAmount;
         }
     }
 }
