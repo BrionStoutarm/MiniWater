@@ -25,7 +25,6 @@ public class PlayerInput : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        OnLeftClickEvent += HandleLeftClick;
     }
 
     // Update is called once per frame
@@ -59,8 +58,5 @@ public class PlayerInput : MonoBehaviour
             Debug.Log("Missed");
             return;
         }
-
-        GameObject hitObj = hit.collider.gameObject;
-        if (OnObjectSelectedEvent != null) OnObjectSelectedEvent(this, new OnObjectSelectedArgs { obj = hitObj });
     }
 }

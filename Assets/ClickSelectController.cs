@@ -7,12 +7,14 @@ public class ClickSelectController : MonoBehaviour
 {
     [SerializeField] private Camera m_camera;
 
-    public class SelectedObjectEventArgs : EventArgs {
-        public PlacedObject placedObject;
+    public class SelectedBuildingArgs : EventArgs {
+        public BuildingPlacedObject selectedBuilding;
     };
-    public static EventHandler<SelectedObjectEventArgs> OnSelectedObjectChanged;
-
-    public static PlacedObject SelectedObject { get; private set; }
+    public static EventHandler<SelectedBuildingArgs> SelectedBuildingChanged;
+    public class SelectedVillagerArgs : EventArgs {
+        public Villager selectedVillager;
+    };
+    public static EventHandler<SelectedVillagerArgs> SelectedVillagerChanged;
 
     string text;
     private void Awake() {
@@ -39,25 +41,22 @@ public class ClickSelectController : MonoBehaviour
     private void HandleLeftClick(object sender, PlayerInput.OnLeftClickArgs args) {
         if (!GridBuildingSystem.Instance.isActive()) {
             RaycastHit hit = StaticFunctions.GetMouseRaycastHit();
-            PlacedObject placedObject = GridBuildingSystem.Instance.GetPlacedObjectAtWorldPosition(hit.point);
-            if (placedObject != null) {
-
-                //fill out selected object window
-                //text = placedObject.GetObjectName();
-                //m_selectedObjectArea.UpdateUI(placedObject);
-                //SelectedObject = placedObject;
-
-                //if its a building, enable assign villager button
-                //if(placedObject is BuildingPlacedObject) {
-                //    BuildingPlacedObject buildingObj = placedObject as BuildingPlacedObject;
-
-                //}
-                if(OnSelectedObjectChanged != null) { OnSelectedObjectChanged(this, new SelectedObjectEventArgs { placedObject = placedObject }); }
+            GameObject hitObject = hit.collider.gameObject;
+            if (StaticFunctions.GetVillagerFromGameObject(hitObject) != null) {
+                Villager selectedVillager = StaticFunctions.GetVillagerFromGameObject(hitObject);
+                if (SelectedVillagerChanged != null) { SelectedVillagerChanged(this, new SelectedVillagerArgs { selectedVillager = selectedVillager }); }
+            }
+            else if(StaticFunctions.GetBuildingFromGameObject(hitObject) != null) {
+                BuildingPlacedObject selectedBuilding = StaticFunctions.GetBuildingFromGameObject(hitObject);
+                if (SelectedBuildingChanged != null) { SelectedBuildingChanged(this, new SelectedBuildingArgs { selectedBuilding = selectedBuilding }); }
             }
             else {
-                Debug.Log("Didnt hit placedObject");
+                if (SelectedVillagerChanged != null) { SelectedVillagerChanged(this, new SelectedVillagerArgs { selectedVillager = null }); }
+                if (SelectedBuildingChanged != null) { SelectedBuildingChanged(this, new SelectedBuildingArgs { selectedBuilding = null }); }
+                Debug.Log("Didnt hit anything");
             }
         }
+        //else let GridBuildingSystem handle it
     }
 
     private void HandleRightClick(object sender, PlayerInput.OnRightClickArgs args) {

@@ -43,7 +43,7 @@ public static class StaticFunctions {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         Physics.Raycast(ray, out hit);
-        
+
         return hit;
     }
 
@@ -82,5 +82,17 @@ public static class StaticFunctions {
             foreach (Transform child in currentTarget)
                 moveTargets.Push(child);
         }
+    }
+
+    public static Villager GetVillagerFromGameObject(GameObject obj) {
+        Villager villager = null;
+        villager = obj.transform.parent.GetComponent<Villager>();
+        return villager;
+    }
+
+    public static BuildingPlacedObject GetBuildingFromGameObject(GameObject obj) {
+        BuildingPlacedObject building = null;
+        building = obj.transform.parent.GetComponent<BuildingPlacedObject>();
+        return building;
     }
 }

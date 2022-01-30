@@ -14,10 +14,11 @@ public class VillageManager : MonoBehaviour {
 
     public Villager villagerPrefab;
     public List<Villager> villagerList;
+    private Queue<Villager> inactiveVillagers;
 
     private Villager selectedVillager;
     private BuildingPlacedObject selectedBuilding;
-    private Queue<Villager> inactiveVillagers;
+
 
     public int foodConsumptionModifier = 1;
     public int waterConsumptionModifier = 2;
@@ -62,9 +63,9 @@ public class VillageManager : MonoBehaviour {
 
         GridBuildingSystem.Instance.OnPlacedBuilding += HandlePlacedBuilding;
         GameManager.Instance.TimeStepEvent += ConsumeVillagerResources;
-        PlayerInput.OnObjectSelectedEvent += HandleSelectedObject;
-        PlayerInput.OnLeftClickEvent += HandleLeftClickEvent;
         PlayerInput.OnRightClickEvent += HandleRightClickEvent;
+        ClickSelectController.SelectedVillagerChanged += HandleSelectedVillager;
+        ClickSelectController.SelectedBuildingChanged += HandleSelectedBuilding;
     }
 
     // Start is called before the first frame update
@@ -110,12 +111,24 @@ public class VillageManager : MonoBehaviour {
         if (OnResourceAmountChange != null) { OnResourceAmountChange(this, new OnResourceAmountChangeArgs { foodSupply = foodSupply, waterSupply = waterSupply, woodSupply = woodSupply, metalSupply = metalSupply }) ; }
     }
 
-    void HandleLeftClickEvent(object sender, PlayerInput.OnLeftClickArgs args) {
-        if (selectedBuilding != null)
-            selectedBuilding = null;
+    void HandleSelectedVillager(object sender, ClickSelectController.SelectedVillagerArgs args) {
+        selectedVillager = args.selectedVillager;
+        if (selectedVillager != null) {
+            Debug.Log("Selected Villager: " + selectedVillager.name);
+        }
+        else {
+            Debug.Log("Deselect Villager");
+        }
+    }
 
-        if (selectedVillager != null)
-            selectedVillager = null;
+    void HandleSelectedBuilding(object sender, ClickSelectController.SelectedBuildingArgs args) { 
+        selectedBuilding = args.selectedBuilding;
+        if(selectedBuilding != null) {
+            Debug.Log("Selected building: " + selectedBuilding.name);
+        }
+        else {
+            Debug.Log("Deselect building");
+        }
     }
 
     void HandleRightClickEvent(object sender, PlayerInput.OnRightClickArgs args) {
