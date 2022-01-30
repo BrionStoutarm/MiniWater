@@ -8,6 +8,9 @@ public class Villager : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     public Vector3 goal;
     public Transform homeLocation;
+    public float energyLevel = 100;
+
+
     public SelectedVillagerUI villagerUIPrefab;
     private SelectedVillagerUI uiInstance;
     // Start is called before the first frame update
@@ -21,18 +24,24 @@ public class Villager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(energyLevel == 0) {
+            Debug.Log(gameObject.name + " is out of energy!");
+        }
     }
 
-    private void DoTask() {
-        
+    public void DecreaseEnergy(float amount) {
+        if (energyLevel - amount <= 0)
+            energyLevel = 0;
+        else 
+            energyLevel -= amount;
     }
 
-    public void showUi(Vector3 location) {
+    public void ShowUI(Vector3 location) {
         //uiInstance.transform.position = location;
         //uiInstance.enabled = true;
     }
 
-    public void onUnselect() {
+    public void OnUnselect() {
         //uiInstance.enabled = false;
     }
 

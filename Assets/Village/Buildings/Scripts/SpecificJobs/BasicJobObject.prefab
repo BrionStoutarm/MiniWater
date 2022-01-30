@@ -45,3 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Basic Job
   description: Test shit
+  progressRate: 2
+  energyCost: 5
+  jobProgressAmount: 10

@@ -19,9 +19,5 @@ MonoBehaviour:
   height: 5
   isMultiDeck: 0
   additionalDecks: 0
-  woodCost: 35
-  metalCost: 25
-  waterCost: 0
-  foodCost: 0
-  weight: 1
-  buildingJob: {fileID: 3999012807370117686, guid: 0cec990383e14174d84ed98d225076f1, type: 3}
+  cost: 0
+  buildingJob: {fileID: 1878889730170064821, guid: 107d2b112a835e14bb81edfcc00e7fd5, type: 3}

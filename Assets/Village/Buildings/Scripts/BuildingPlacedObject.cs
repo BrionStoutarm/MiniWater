@@ -23,14 +23,18 @@ public class BuildingPlacedObject : PlacedObject
     }
 
     private void Update() {
-        if(assignedVillager != null) {
-            buildingJob.DoJob();
-        }
+
+    }
+
+    private void WorkJob() {
+        buildingJob.DoJob();
     }
 
     public void AssignVillager(Villager villager) {
         assignedVillager = null;
         assignedVillager = villager;
+        buildingJob.SetWorkingVillager(villager);
+        InvokeRepeating("WorkJob", 0, buildingJob.progressRate);
     }
 
     public BuildingPlaceableScriptableObject GetBuildingType() {
