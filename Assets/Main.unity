@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 596655488}
   - component: {fileID: 596655491}
   - component: {fileID: 596655489}
+  - component: {fileID: 596655492}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -205,6 +206,19 @@ MonoBehaviour:
   scrollSpeed: 10
   sensitivity: 10
   maxYAngle: 80
+--- !u!114 &596655492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596655487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea37c1b556308e4b923001ad29a7acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_camera: {fileID: 963194227}
 --- !u!1 &648960245
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,7 +277,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -670,6 +683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {x: 0, y: 0, z: 0}
   homeLocation: {fileID: 0}
+  energyLevel: 100
   villagerUIPrefab: {fileID: 0}
 --- !u!4 &1405823640
 Transform:
@@ -766,7 +780,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

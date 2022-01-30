@@ -18,7 +18,7 @@ public class BuildingPlacedObject : PlacedObject
         placedObject.dir = dir;
         placedObject.originalScale = placeableType.prefab.localScale;
         placedObject.gridDensity = cellScale;
-        placedObject.buildingJob = placeableType.buildingJob;
+        placedObject.buildingJob = Instantiate(placeableType.buildingJob, placedObject.transform);
         return placedObject;
     }
 
@@ -27,11 +27,11 @@ public class BuildingPlacedObject : PlacedObject
     }
 
     private void WorkJob() {
+        Debug.Log(gameObject.name + " working: ");
         buildingJob.DoJob();
     }
 
     public void AssignVillager(Villager villager) {
-        assignedVillager = null;
         assignedVillager = villager;
         buildingJob.SetWorkingVillager(villager);
         InvokeRepeating("WorkJob", 0, buildingJob.progressRate);
