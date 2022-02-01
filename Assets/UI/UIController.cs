@@ -12,6 +12,8 @@ public class UIController : MonoBehaviour {
     public Text foodSupplyText;
     public Text waterSupplyText;
     public Canvas uiCanvas;
+    public SelectedObjectArea selectedObjectUI;
+    private ObjectUI selectedObject;
 
     //[SerializeField] private SelectedObjectArea m_selectedObjectArea;
 
@@ -25,12 +27,19 @@ public class UIController : MonoBehaviour {
         }
         if (VillageManager.Instance != null) {
             VillageManager.Instance.OnResourceAmountChange += UpdateResourceUI;
-            VillageManager.Instance.OnVillagerSelectedEvent += HandleSelectedVillager;
-            VillageManager.Instance.OnBuildingSelectedEvent += HandleSelectedBuilding;
         }
-
+        if(ClickSelectController.Instance != null) {
+            ClickSelectController.Instance.SelectedBuildingChanged += HandleSelectedBuilding;
+            ClickSelectController.Instance.SelectedVillagerChanged += HandleSelectedVillager;
+        }
         foodSupplyText.text = "Food Supply: " + VillageManager.Instance.foodSupply.ToString();
         waterSupplyText.text = "Water Supply: " + VillageManager.Instance.waterSupply.ToString();
+    }
+
+    private void Update() {
+        if(selectedObject != null) {
+            selectedObject.ShowUI(selectedObjectUI);
+        }
     }
 
     void UpdateResourceUI(object sender, VillageManager.OnResourceAmountChangeArgs args) {
@@ -38,11 +47,12 @@ public class UIController : MonoBehaviour {
         waterSupplyText.text = "Water Supply: " + args.waterSupply.ToString();
     }
 
-    void HandleSelectedVillager(object sender, VillageManager.OnVillagerSelectedArgs args) {
-        //args.selectedVillager.showUi()
+    void HandleSelectedBuilding(object sender, ClickSelectController.SelectedBuildingArgs args) {
+        Debug.Log("UIController building");
+        selectedObject = args.selectedBuilding;
     }
-
-    void HandleSelectedBuilding(object sender, VillageManager.OnBuildingSelectedArgs args) {
-
+    void HandleSelectedVillager(object sender, ClickSelectController.SelectedVillagerArgs args) {
+        Debug.Log("UIController villager");
+        selectedObject = args.selectedVillager;
     }
 }

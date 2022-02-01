@@ -23,16 +23,6 @@ public class VillageManager : MonoBehaviour {
     public int foodConsumptionModifier = 1;
     public int waterConsumptionModifier = 2;
 
-    public event EventHandler<OnBuildingSelectedArgs> OnBuildingSelectedEvent;
-    public class OnBuildingSelectedArgs : EventArgs {
-        public BuildingPlacedObject selectedBuilding;
-    }
-
-    public event EventHandler<OnVillagerSelectedArgs> OnVillagerSelectedEvent;
-    public class OnVillagerSelectedArgs : EventArgs {
-        public Villager selectedVillager;
-    }
-
     public event EventHandler<OnResourceAmountChangeArgs> OnResourceAmountChange;
     public class OnResourceAmountChangeArgs : EventArgs {
         public int foodSupply;
@@ -64,8 +54,8 @@ public class VillageManager : MonoBehaviour {
         GridBuildingSystem.Instance.OnPlacedBuilding += HandlePlacedBuilding;
         GameManager.Instance.TimeStepEvent += ConsumeVillagerResources;
         PlayerInput.OnRightClickEvent += HandleRightClickEvent;
-        ClickSelectController.SelectedVillagerChanged += HandleSelectedVillager;
-        ClickSelectController.SelectedBuildingChanged += HandleSelectedBuilding;
+        ClickSelectController.Instance.SelectedVillagerChanged += HandleSelectedVillager;
+        ClickSelectController.Instance.SelectedBuildingChanged += HandleSelectedBuilding;
     }
 
     // Start is called before the first frame update
@@ -139,18 +129,6 @@ public class VillageManager : MonoBehaviour {
                 building.AssignVillager(selectedVillager);
             }
             selectedVillager.Assign(StaticFunctions.GetMouseRaycastHit().point);
-        }
-    }
-
-    void HandleSelectedObject(object sender, PlayerInput.OnObjectSelectedArgs args) {
-        GameObject obj = args.obj;
-        if(obj.transform.parent.GetComponent("Villager") != null) {
-            Debug.Log("Selected Villager");
-            selectedVillager = obj.transform.parent.GetComponent<Villager>();
-            if (OnVillagerSelectedEvent != null) { OnVillagerSelectedEvent(this, new OnVillagerSelectedArgs { selectedVillager = selectedVillager }); }
-        }
-        if (obj.transform.parent.GetComponent("BuildingPlacedObject") != null) {
-            Debug.Log("Selected Building");
         }
     }
 }

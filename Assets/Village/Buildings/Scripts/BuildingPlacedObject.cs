@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingPlacedObject : PlacedObject
+public class BuildingPlacedObject : PlacedObject, ObjectUI
 {
     //will expand to allow multiple workers
     Villager assignedVillager;
@@ -39,5 +39,11 @@ public class BuildingPlacedObject : PlacedObject
 
     public BuildingPlaceableScriptableObject GetBuildingType() {
         return placeableType as BuildingPlaceableScriptableObject;
+    }
+
+    public void ShowUI(SelectedObjectArea area) {
+        area.objectNameText.text = gameObject.name;
+        area.objectDescriptionText.text = "Building description text";
+        area.objectProgressSlider.value = buildingJob.jobProgressAmount;
     }
 }
