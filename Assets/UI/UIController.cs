@@ -38,7 +38,13 @@ public class UIController : MonoBehaviour {
 
     private void Update() {
         if(selectedObject != null) {
+            selectedObjectUI.enabled = true;
+            selectedObjectUI.SetVisible(true);
             selectedObject.ShowUI(selectedObjectUI);
+        }
+        else {
+            selectedObjectUI.SetVisible(false);
+            selectedObjectUI.enabled = false;
         }
     }
 

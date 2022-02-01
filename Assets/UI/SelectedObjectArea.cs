@@ -9,7 +9,18 @@ public class SelectedObjectArea : MonoBehaviour
     public Text objectDescriptionText;
     public Slider objectProgressSlider;
 
+    private Vector3 origScale;
+
     public void Awake() {
-        enabled = false;
+        origScale = transform.localScale;
+    }
+
+    public void SetVisible(bool visible) {
+        if (visible) {
+            transform.localScale = origScale;
+        }
+        else {
+            transform.localScale = Vector3.zero;
+        }
     }
 }
