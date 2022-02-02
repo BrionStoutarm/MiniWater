@@ -53,7 +53,6 @@ public class VillageManager : MonoBehaviour {
 
         GridBuildingSystem.Instance.OnPlacedBuilding += HandlePlacedBuilding;
         GameManager.Instance.TimeStepEvent += ConsumeVillagerResources;
-        PlayerInput.OnRightClickEvent += HandleRightClickEvent;
         ClickSelectController.Instance.SelectedVillagerChanged += HandleSelectedVillager;
         ClickSelectController.Instance.SelectedBuildingChanged += HandleSelectedBuilding;
     }
@@ -75,14 +74,18 @@ public class VillageManager : MonoBehaviour {
         Instance.inactiveVillagers.Enqueue(villager);
     }
 
-    //will be triggered by a button on each building 
-    public void AssignVillagers(int numberOfVillagers, Vector3 goal) {
-        for(int i = 0; i < numberOfVillagers; i++) {
-            if (inactiveVillagers.Count == 0)
-                break;
-            Villager villager = inactiveVillagers.Dequeue();
-            villager.Assign(goal);
-        }
+    public bool HasSelectedVillager() { return selectedVillager != null; }
+
+    public void AssignSelectedVillager(BuildingPlacedObject building) {
+        selectedVillager.Assign(building);
+        building.AssignVillager(selectedVillager);
+    }
+    public void AssignSelectedVillager(Vector3 destination) {
+        selectedVillager.Assign(destination);
+    }
+
+    public void UnassignVillager() {
+        selectedVillager.Unassign();
     }
 
     void ConsumeVillagerResources(object sender, GameManager.TimeStepArgs args) {
@@ -118,17 +121,6 @@ public class VillageManager : MonoBehaviour {
         }
         else {
             Debug.Log("Deselect building");
-        }
-    }
-
-    void HandleRightClickEvent(object sender, PlayerInput.OnRightClickArgs args) {
-        if(selectedVillager != null) {
-            RaycastHit hit = StaticFunctions.GetMouseRaycastHit();
-            BuildingPlacedObject building = hit.collider.gameObject.transform.parent.GetComponent<BuildingPlacedObject>();
-            if (building != null) {
-                building.AssignVillager(selectedVillager);
-            }
-            selectedVillager.Assign(StaticFunctions.GetMouseRaycastHit().point);
         }
     }
 }

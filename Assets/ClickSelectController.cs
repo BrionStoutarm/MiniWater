@@ -57,31 +57,44 @@ public class ClickSelectController : MonoBehaviour
                 if (StaticFunctions.GetVillagerFromGameObject(hitObject) != null) {
                     Villager selectedVillager = StaticFunctions.GetVillagerFromGameObject(hitObject);
                     if (SelectedVillagerChanged != null) { SelectedVillagerChanged(this, new SelectedVillagerArgs { selectedVillager = selectedVillager }); }
+                    return;
                 }
                 else if(StaticFunctions.GetBuildingFromGameObject(hitObject) != null) {
                     BuildingPlacedObject selectedBuilding = StaticFunctions.GetBuildingFromGameObject(hitObject);
                     if (SelectedBuildingChanged != null) { SelectedBuildingChanged(this, new SelectedBuildingArgs { selectedBuilding = selectedBuilding }); }
-                }
-                else {
-                    if (SelectedVillagerChanged != null) { SelectedVillagerChanged(this, new SelectedVillagerArgs { selectedVillager = null }); }
-                    if (SelectedBuildingChanged != null) { SelectedBuildingChanged(this, new SelectedBuildingArgs { selectedBuilding = null }); }
-                    Debug.Log("Didnt hit anything");
+                    return;
                 }
             }
+
+            if (SelectedVillagerChanged != null) { SelectedVillagerChanged(this, new SelectedVillagerArgs { selectedVillager = null }); }
+            if (SelectedBuildingChanged != null) { SelectedBuildingChanged(this, new SelectedBuildingArgs { selectedBuilding = null }); }
+            Debug.Log("Didnt hit anything");
         }
         //else let GridBuildingSystem handle it
     }
 
     private void HandleRightClick(object sender, PlayerInput.OnRightClickArgs args) {
         if (!GridBuildingSystem.Instance.isActive()) {
-          
-        //    if (SelectedObject != null) {
-        //        m_selectedObjectArea.Clear();
-        //        SelectedObject = null;
-        //    }
-        //    else {
-        //        Debug.Log("Didnt hit placedObject");
-        //    }
+            RaycastHit hit = StaticFunctions.GetMouseRaycastHit();
+            if(hit.collider != null) {
+                if(VillageManager.Instance.HasSelectedVillager()) {
+                    GameObject hitObject = hit.collider.gameObject;
+
+                    //check if building
+                    BuildingPlacedObject hitBuilding = StaticFunctions.GetBuildingFromGameObject(hitObject);
+                    if(hitBuilding != null) {
+                        VillageManager.Instance.AssignSelectedVillager(hitBuilding);
+                    }
+                    else {
+                        VillageManager.Instance.AssignSelectedVillager(hit.point);
+                        VillageManager.Instance.UnassignVillager();
+                    }
+                }
+            }
+            else {
+                if (SelectedVillagerChanged != null) { SelectedVillagerChanged(this, new SelectedVillagerArgs { selectedVillager = null }); }
+                if (SelectedBuildingChanged != null) { SelectedBuildingChanged(this, new SelectedBuildingArgs { selectedBuilding = null }); }
+            }
         }
     }
 }

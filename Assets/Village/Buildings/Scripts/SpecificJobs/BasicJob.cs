@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class BasicJob : Job
 {
-    private int jobProgress = 0;
-
     // called every "jobProgressRate" seconds
     public override void DoJob() {
-        Debug.Log("Doing basic job: " + jobProgress);
+        //Debug.Log("Doing basic job: " + jobProgress);
         jobProgress += jobProgressAmount;
         workingVillager.DecreaseEnergy(energyCost);
         if (jobProgress >= 100) {

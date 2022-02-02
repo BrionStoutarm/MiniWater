@@ -19,8 +19,11 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI
         placedObject.originalScale = placeableType.prefab.localScale;
         placedObject.gridDensity = cellScale;
         placedObject.buildingJob = Instantiate(placeableType.buildingJob, placedObject.transform);
+        placedObject.name = "Building: " + origin.ToString();
         return placedObject;
     }
+
+    public Job GetJob() { return buildingJob; }
 
     private void Update() {
 
@@ -34,7 +37,18 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI
     public void AssignVillager(Villager villager) {
         assignedVillager = villager;
         buildingJob.SetWorkingVillager(villager);
+        assignedVillager.UnassignVillagerEvent += HandleUnassignedVillager;
+        //need to wait until villager is at the building to start this.
         InvokeRepeating("WorkJob", 0, buildingJob.progressRate);
+    }
+
+    public void HandleUnassignedVillager(object sender, Villager.UnassignVillagerEventArgs args) {
+        if(args.workedBuilding == this) {
+            //will change to check if workers are still working at this
+            Debug.Log("Worked stopped at: " + buildingJob.GetJobAmount());
+            assignedVillager.UnassignVillagerEvent -= HandleUnassignedVillager;
+            CancelInvoke("WorkJob");
+        }
     }
 
     public BuildingPlaceableScriptableObject GetBuildingType() {
