@@ -37,15 +37,7 @@ public class UIController : MonoBehaviour {
     }
 
     private void Update() {
-        if(selectedObject != null) {
-            selectedObjectUI.enabled = true;
-            selectedObjectUI.SetVisible(true);
-            selectedObject.ShowUI(selectedObjectUI);
-        }
-        else {
-            selectedObjectUI.SetVisible(false);
-            selectedObjectUI.enabled = false;
-        }
+
     }
 
     void UpdateResourceUI(object sender, VillageManager.OnResourceAmountChangeArgs args) {
@@ -56,9 +48,11 @@ public class UIController : MonoBehaviour {
     void HandleSelectedBuilding(object sender, ClickSelectController.SelectedBuildingArgs args) {
         Debug.Log("UIController building");
         selectedObject = args.selectedBuilding;
+        selectedObjectUI.SetObject(selectedObject);
     }
     void HandleSelectedVillager(object sender, ClickSelectController.SelectedVillagerArgs args) {
         Debug.Log("UIController villager");
         selectedObject = args.selectedVillager;
+        selectedObjectUI.SetObject(selectedObject);
     }
 }

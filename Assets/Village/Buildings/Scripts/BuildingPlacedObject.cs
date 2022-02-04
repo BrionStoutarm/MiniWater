@@ -55,9 +55,7 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI
         return placeableType as BuildingPlaceableScriptableObject;
     }
 
-    public void ShowUI(SelectedObjectArea area) {
-        area.objectNameText.text = gameObject.name;
-        area.objectDescriptionText.text = "Building description text";
-        area.objectProgressSlider.value = buildingJob.jobProgressAmount;
-    }
+    public ObjectUIData GetUIData() {
+        return new ObjectUIData(name, buildingJob.description, true, buildingJob.jobProgressAmount);            
+    }                            
 }

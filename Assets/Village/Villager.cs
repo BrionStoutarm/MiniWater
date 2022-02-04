@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class Villager : MonoBehaviour, ObjectUI {
+    public string villagerName, description;
     private NavMeshAgent navMeshAgent;
     public Vector3 goal;
     public Transform homeLocation;
@@ -64,9 +65,7 @@ public class Villager : MonoBehaviour, ObjectUI {
     }
 
     //UI
-    public void ShowUI(SelectedObjectArea area) {
-        area.objectNameText.text = gameObject.name;
-        area.objectDescriptionText.text = "This villager fucks";
-        area.objectProgressSlider.value = energyLevel;
+    public ObjectUIData GetUIData() {
+        return new ObjectUIData(villagerName, description, true, energyLevel);
     }
 }
