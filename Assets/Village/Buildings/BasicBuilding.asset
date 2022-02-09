@@ -15,8 +15,8 @@ MonoBehaviour:
   nameString: BasicBuilding
   prefab: {fileID: 570854674442227989, guid: bcc4bf70cd5b746418843e7a0d2ab310, type: 3}
   visual: {fileID: 3444159564552651629, guid: db2f96a648c7c604ead12e1b64ce1c3a, type: 3}
-  width: 5
-  height: 5
+  width: 2
+  height: 2
   isMultiDeck: 0
   additionalDecks: 0
   cost: 0
