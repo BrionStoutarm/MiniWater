@@ -6,12 +6,11 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 
-public class GridBuildingSystem : MonoBehaviour
-{
+public class GridBuildingSystem : MonoBehaviour {
     public int gridDensity;
     public Vector3 gridOrigin;
     public float gridScale;
-
+    public Material gridMat;
 
     [SerializeField] private List<BuildingPlaceableScriptableObject> buildingTypeList;
     private BuildingPlaceableScriptableObject currentPlaceBuilding;
@@ -51,7 +50,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void OnEnable() {
-        if (OnBuildingSysActive != null) { OnBuildingSysActive(this, new OnBuildingSysActiveArgs { active = true });  }
+        if (OnBuildingSysActive != null) { OnBuildingSysActive(this, new OnBuildingSysActiveArgs { active = true }); }
     }
 
     private void OnDisable() {
@@ -59,7 +58,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     public Vector3 GetMouseWorldSnappedPosition() {
-        if(enabled) {
+        if (enabled) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
@@ -106,12 +105,12 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void Awake() {
-        if(Instance != null) {
+        if (Instance != null) {
             Debug.LogError("Multiple Building Systems");
             return;
         }
         Instance = this;
-        
+
         currentPlaceBuilding = buildingTypeList[0];
 
 
@@ -129,7 +128,7 @@ public class GridBuildingSystem : MonoBehaviour
     }
 
     private void HandleLeftClick(Vector3 mousePosition) {
-        if(enabled) {
+        if (enabled) {
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 
             RaycastHit hit;
@@ -165,14 +164,14 @@ public class GridBuildingSystem : MonoBehaviour
                     Vector3 placeObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(buildingRotationOffset.x, 0, buildingRotationOffset.y);
                     placeObjectWorldPosition.y = hitPoint.y;
 
-                    
+
                     BuildingPlacedObject placedObject = BuildingPlacedObject.CreateBuilding(placeObjectWorldPosition, new Vector2Int(x, z), dir, currentPlaceBuilding, gridDensity);
                     foreach (Vector2Int gridPosition in gridPositionList) {
                         grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
                     }
-                    
 
-                    if (OnPlacedBuilding != null) { OnPlacedBuilding(this, new OnPlacedBuildingArgs { placedObject = currentPlaceBuilding, gridPosition =  new Vector2Int(x, z)}); }
+
+                    if (OnPlacedBuilding != null) { OnPlacedBuilding(this, new OnPlacedBuildingArgs { placedObject = currentPlaceBuilding, gridPosition = new Vector2Int(x, z) }); }
                 }
                 else {
                     //StaticFunctions.CreateWorldTextPopup("Cannot build here!", hitPoint);
@@ -191,6 +190,17 @@ public class GridBuildingSystem : MonoBehaviour
         int gridHeight = (int)(upperRight.z - lowerLeft.z);
 
         grid = new Grid<GridObject>(gridWidth, gridHeight, gridScale, gridDensity, deckCollider.bounds.min, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), GameManager.Instance.OnDebug());
+        SetGridShader();
+    }
+
+    private void SetGridShader() {
+        Debug.Log("in setgridshader");
+
+        for (int i = 0; i < grid.Width(); i++) {
+            for (int j = 0; j < grid.Height(); j++) {
+                gridMat.SetVector("GridPosition", new Vector4(i, 0, j, 0));
+            }
+        }
     }
 
     private void Instance_OnRightClickEvent(object sender, PlayerInput.OnRightClickArgs e) {

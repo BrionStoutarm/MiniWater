@@ -456,6 +456,7 @@ MonoBehaviour:
   gridDensity: 1
   gridOrigin: {x: 0, y: 0, z: 0}
   gridScale: 1
+  gridMat: {fileID: 2100000, guid: 2b6c6ffd427c7b646824a342c7bd4413, type: 2}
   buildingTypeList:
   - {fileID: 11400000, guid: d58065e8e8bc6b346bfd99443aaaa330, type: 2}
   - {fileID: 11400000, guid: e7bff237749474c4b95a97f9c31a1018, type: 2}
@@ -888,7 +889,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d65067707d6488a4197ddf5f51512fbd, type: 2}
+  - {fileID: 2100000, guid: 2b6c6ffd427c7b646824a342c7bd4413, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
