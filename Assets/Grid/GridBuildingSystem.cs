@@ -7,9 +7,11 @@ using UnityEngine.Rendering;
 
 
 public class GridBuildingSystem : MonoBehaviour {
-    public int gridDensity;
-    public Vector3 gridOrigin;
+    public int gridWidth, gridHeight;
     public float gridScale;
+    public int gridDensity;
+    public Collider deckCollider;
+
     public Material gridMat;
 
     [SerializeField] private List<BuildingPlaceableScriptableObject> buildingTypeList;
@@ -67,8 +69,8 @@ public class GridBuildingSystem : MonoBehaviour {
                 Vector3 hitPoint = hit.point;
                 grid.GetXZ(hitPoint, out int x, out int z);
 
-                Vector2Int rotationOffset = currentPlaceBuilding.GetRotationOffset(dir, gridDensity);
-                Vector3 placeObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y);
+                Vector2Int rotationOffset = currentPlaceBuilding.GetRotationOffset(dir, 1);
+                Vector3 placeObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, 0, rotationOffset.y) * gridScale;
 
                 return placeObjectWorldPosition;
             }
@@ -161,7 +163,7 @@ public class GridBuildingSystem : MonoBehaviour {
                 GridObject gridObject = grid.GetGridObject(x, z);
                 if (canBuild) {
                     Vector2Int buildingRotationOffset = currentPlaceBuilding.GetRotationOffset(dir, gridDensity);
-                    Vector3 placeObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(buildingRotationOffset.x, 0, buildingRotationOffset.y);
+                    Vector3 placeObjectWorldPosition = GetMouseWorldSnappedPosition();
                     placeObjectWorldPosition.y = hitPoint.y;
 
 
@@ -183,24 +185,8 @@ public class GridBuildingSystem : MonoBehaviour {
 
     private void CreateDeckGrid() {
         Collider deckCollider = GameObject.Find("Deck").GetComponent<MeshCollider>();
-        Vector3 lowerLeft = deckCollider.bounds.min;
-        Vector3 upperRight = deckCollider.bounds.max;
-
-        int gridWidth = (int)(upperRight.x - lowerLeft.x);
-        int gridHeight = (int)(upperRight.z - lowerLeft.z);
 
         grid = new Grid<GridObject>(gridWidth, gridHeight, gridScale, gridDensity, deckCollider.bounds.min, (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y), GameManager.Instance.OnDebug());
-        SetGridShader();
-    }
-
-    private void SetGridShader() {
-        Debug.Log("in setgridshader");
-
-        for (int i = 0; i < grid.Width(); i++) {
-            for (int j = 0; j < grid.Height(); j++) {
-                gridMat.SetVector("GridPosition", new Vector4(i, 0, j, 0));
-            }
-        }
     }
 
     private void Instance_OnRightClickEvent(object sender, PlayerInput.OnRightClickArgs e) {

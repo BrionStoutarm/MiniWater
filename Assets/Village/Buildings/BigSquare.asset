@@ -15,12 +15,7 @@ MonoBehaviour:
   nameString: BigSquare
   prefab: {fileID: 7241139017237830300, guid: 59283c873cdaa2e44b5dd0360f10849e, type: 3}
   visual: {fileID: 8727802490995396343, guid: 4a4fe121133e62844acbafaa29845023, type: 3}
-  width: 10
-  height: 10
-  isMultiDeck: 0
-  additionalDecks: 0
-  woodCost: 50
-  metalCost: 45
-  waterCost: 5
-  foodCost: 10
-  weight: 7
+  width: 2
+  height: 2
+  cost: 0
+  buildingJob: {fileID: 1878889730170064821, guid: 107d2b112a835e14bb81edfcc00e7fd5, type: 3}

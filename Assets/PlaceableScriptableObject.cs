@@ -26,8 +26,6 @@ public class PlaceableScriptableObject : ScriptableObject {
     public int width;
     public int height;
 
-    public bool isMultiDeck;
-    public int additionalDecks;
     public int GetRotationAngle(Dir dir) {
         switch (dir) {
             default:
@@ -41,9 +39,9 @@ public class PlaceableScriptableObject : ScriptableObject {
     public Vector2Int GetRotationOffset(Dir dir, int cellScale) {
         switch (dir) {
             default:
-            case Dir.Down: return new Vector2Int(0, 0);
-            case Dir.Left: return new Vector2Int(0, width * cellScale);
-            case Dir.Up: return new Vector2Int(width * cellScale, height * cellScale);
+            case Dir.Down:  return new Vector2Int(0, 0);
+            case Dir.Left:  return new Vector2Int(0, width * cellScale);
+            case Dir.Up:    return new Vector2Int(width * cellScale, height * cellScale);
             case Dir.Right: return new Vector2Int(height * cellScale, 0);
         }
     }
