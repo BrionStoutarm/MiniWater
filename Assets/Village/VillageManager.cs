@@ -96,10 +96,10 @@ public class VillageManager : MonoBehaviour {
     }
 
     void HandlePlacedBuilding(object sender, GridBuildingSystem.OnPlacedBuildingArgs args) {
-        foodSupply -= args.placedObject.cost;
-        waterSupply -= args.placedObject.cost;
-        woodSupply -= args.placedObject.cost;
-        metalSupply -= args.placedObject.cost;
+        foodSupply -= args.placedObject.GetBuildingType().cost;
+        waterSupply -= args.placedObject.GetBuildingType().cost;
+        woodSupply -= args.placedObject.GetBuildingType().cost;
+        metalSupply -= args.placedObject.GetBuildingType().cost;
 
         if (OnResourceAmountChange != null) { OnResourceAmountChange(this, new OnResourceAmountChangeArgs { foodSupply = foodSupply, waterSupply = waterSupply, woodSupply = woodSupply, metalSupply = metalSupply }) ; }
     }

@@ -33,7 +33,7 @@ public class GridBuildingSystem : MonoBehaviour {
     //temporary i think, for villager testing purposes
     public event EventHandler<OnPlacedBuildingArgs> OnPlacedBuilding;
     public class OnPlacedBuildingArgs : EventArgs {
-        public BuildingPlaceableScriptableObject placedObject; //should subclass this to be a building, as there will be more placeable objects
+        public BuildingPlacedObject placedObject; //should subclass this to be a building, as there will be more placeable objects
         public Vector2Int gridPosition;
     }
 
@@ -173,7 +173,7 @@ public class GridBuildingSystem : MonoBehaviour {
                     }
 
 
-                    if (OnPlacedBuilding != null) { OnPlacedBuilding(this, new OnPlacedBuildingArgs { placedObject = currentPlaceBuilding, gridPosition = new Vector2Int(x, z) }); }
+                    if (OnPlacedBuilding != null) { OnPlacedBuilding(this, new OnPlacedBuildingArgs { placedObject = placedObject, gridPosition = new Vector2Int(x, z) }); }
                 }
                 else {
                     //StaticFunctions.CreateWorldTextPopup("Cannot build here!", hitPoint);

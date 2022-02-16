@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingPlacedObject : PlacedObject, ObjectUI
-{
+public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIData {
     //will expand to allow multiple workers
     Villager assignedVillager;
     Job buildingJob;
@@ -56,6 +55,10 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI
     }
 
     public ObjectUIData GetUIData() {
-        return new ObjectUIData(name, buildingJob.description, true, buildingJob.jobProgressAmount);            
-    }                            
+        return new ObjectUIData(buildingJob.name, buildingJob.description, true, buildingJob.jobProgressAmount);            
+    }                           
+    
+    public ListItemData GetListItemData() {
+        return new ListItemData(buildingJob.name);
+    }
 }
