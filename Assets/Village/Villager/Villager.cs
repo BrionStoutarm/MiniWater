@@ -29,7 +29,7 @@ public class Villager : MonoBehaviour, ObjectUI {
     // Update is called once per frame
     void Update() {
         if (energyLevel == 0) {
-            Debug.Log(gameObject.name + " is out of energy!");
+            //Debug.Log(gameObject.name + " is out of energy!");
         }
     }
 

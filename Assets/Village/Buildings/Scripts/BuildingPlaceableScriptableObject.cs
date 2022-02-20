@@ -8,4 +8,6 @@ public class BuildingPlaceableScriptableObject : PlaceableScriptableObject
     public int cost;
 
     public Job buildingJob;
+    public List<UtensilScriptableObject> compatibleUtensils;
+    public int numUtensilSlots;
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Job : MonoBehaviour
 {
-    public string name;
+    public string jobName;
     public string description;
     public float progressRate;
     public float energyCost;

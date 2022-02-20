@@ -17,7 +17,9 @@ MonoBehaviour:
   visual: {fileID: 3444159564552651629, guid: db2f96a648c7c604ead12e1b64ce1c3a, type: 3}
   width: 1
   height: 1
-  isMultiDeck: 0
-  additionalDecks: 0
   cost: 0
   buildingJob: {fileID: 1878889730170064821, guid: 107d2b112a835e14bb81edfcc00e7fd5, type: 3}
+  compatibleUtensils:
+  - {fileID: 11400000, guid: 57a26a0a28090b843bfb6b4f7f02348f, type: 2}
+  - {fileID: 11400000, guid: bd2fa9066f4ca7d449f15a3129836bb3, type: 2}
+  numUtensilSlots: 2
