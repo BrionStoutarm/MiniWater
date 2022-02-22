@@ -12,7 +12,7 @@ public class Villager : MonoBehaviour, ObjectUI {
     public float energyLevel = 100;
 
     private BuildingPlacedObject currentBuilding;
-    private Job currentJob;
+    private JobGameObject currentJob;
 
     public class UnassignVillagerEventArgs : EventArgs {
         public BuildingPlacedObject workedBuilding;

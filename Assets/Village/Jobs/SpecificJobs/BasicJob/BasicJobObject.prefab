@@ -43,8 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c2daf0799ce6c4994ec7dab642997e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Basic Job
-  description: Test shit
-  progressRate: 2
-  energyCost: 5
-  jobProgressAmount: 10
+  jobType: {fileID: 11400000, guid: 51a28d905744a354990fd187c9df8cb4, type: 2}

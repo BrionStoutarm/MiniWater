@@ -5,33 +5,32 @@ using UnityEngine;
 public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIData {
     //will expand to allow multiple workers
     Villager assignedVillager;
-    Job buildingJob;
+    JobGameObject buildingJob;
     int numUtensilSlots;
     List<UtensilScriptableObject> compatibleUtensils;
+    BuildingPlaceableScriptableObject buildingType;
 
-    protected List<Utensil> activeUtensils;
     bool isTested = false;
-    public static BuildingPlacedObject CreateBuilding(Vector3 worldPosition, Vector2Int origin, PlaceableScriptableObject.Dir dir, BuildingPlaceableScriptableObject placeableType, int cellScale) {
-        Transform placedObjectTransform = Instantiate(placeableType.prefab, worldPosition, Quaternion.Euler(0, placeableType.GetRotationAngle(dir), 0));
+    public static BuildingPlacedObject CreateBuilding(Vector3 worldPosition, Vector2Int origin, PlaceableScriptableObject.Dir dir, BuildingPlaceableScriptableObject buildingType, int cellScale) {
+        Transform placedObjectTransform = Instantiate(buildingType.prefab, worldPosition, Quaternion.Euler(0, buildingType.GetRotationAngle(dir), 0));
 
         BuildingPlacedObject placedObject = placedObjectTransform.GetComponent<BuildingPlacedObject>();
 
-        placedObject.placeableType = placeableType;
-        placedObject.numUtensilSlots = placeableType.numUtensilSlots;
-        placedObject.compatibleUtensils = placeableType.compatibleUtensils;
+        placedObject.buildingType = buildingType;
+        placedObject.numUtensilSlots = buildingType.numUtensilSlots;
+        placedObject.compatibleUtensils = buildingType.compatibleUtensils;
         placedObject.origin = origin;
         placedObject.dir = dir;
-        placedObject.originalScale = placeableType.prefab.localScale;
+        placedObject.originalScale = buildingType.prefab.localScale;
         placedObject.gridDensity = cellScale;
-        placedObject.buildingJob = Instantiate(placeableType.buildingJob, placedObject.transform);
+        placedObject.buildingJob = JobGameObject.CreateJobObject(buildingType.buildingJob, placedObject);
         placedObject.name = "Building: " + origin.ToString();
 
-        placedObject.activeUtensils = new List<Utensil>();
 
         return placedObject;
     }
 
-    public Job GetJob() { return buildingJob; }
+    public JobGameObject GetJob() { return buildingJob; }
 
     private void Update() {
         if(Input.GetKeyDown(KeyCode.Space)) {
@@ -40,27 +39,12 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIDa
     }
 
     private void WorkJob() {
-        Debug.Log(gameObject.name + " working: ");
+        Debug.Log(gameObject.name + " working");
         buildingJob.DoJob();
-        if(activeUtensils.Count == 0) {
-            Debug.Log("No utensils!");
-        }
-        foreach(Utensil utensil in activeUtensils) {
-            utensil.IncreaseDirtAmount(5f); // HARDCODED will extract to scriptableobj for Utensils
-        }
-    }
-
-    public bool canAddUtensil(UtensilScriptableObject utensil) { return (activeUtensils.Count < numUtensilSlots) && compatibleUtensils.Contains(utensil); }
-    public void addUtensil(Utensil utensil) {
-        if (canAddUtensil(utensil.utensilType)) {
-            activeUtensils.Add(utensil);
-        }
-        else
-            Debug.Log("Cannot add utensil compatibleUtensils.count = " + compatibleUtensils.Count);
     }
 
     private void TestUtensils() {
-        if(!isTested) {
+        if(!isTested && buildingType.buildingJob.requiresUtensils) {
             Debug.Log("TESTED UTENSILS");
             for(int i = 0; i < numUtensilSlots; i++) {
                 Utensil utensil = Utensil.Create(transform, compatibleUtensils[i]);
@@ -74,7 +58,7 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIDa
                     utensil.transform.localPosition += adjustment;
                 }
 
-                addUtensil(utensil);
+                buildingJob.AddActiveUtensil(utensil);
             }
             isTested = true;
         }
@@ -85,7 +69,7 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIDa
         buildingJob.SetWorkingVillager(villager);
         assignedVillager.UnassignVillagerEvent += HandleUnassignedVillager;
         //need to wait until villager is at the building to start this.
-        InvokeRepeating("WorkJob", 0, buildingJob.progressRate);
+        InvokeRepeating("WorkJob", 0, buildingJob.jobType.progressRate);
     }
 
     public void HandleUnassignedVillager(object sender, Villager.UnassignVillagerEventArgs args) {
@@ -102,10 +86,10 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIDa
     }
 
     public ObjectUIData GetUIData() {
-        return new ObjectUIData(buildingJob.jobName, buildingJob.description, true, buildingJob.jobProgressAmount);            
+        return new ObjectUIData(buildingJob.jobType.jobName, buildingJob.jobType.description, true, buildingJob.GetProgressAmount());            
     }                           
     
     public ListItemData GetListItemData() {
-        return new ListItemData(buildingJob.jobName);
+        return new ListItemData(buildingJob.jobType.jobName);
     }
 }

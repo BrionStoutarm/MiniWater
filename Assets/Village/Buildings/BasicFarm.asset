@@ -10,12 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ba596fe9ccb8b849be817bfb7700892, type: 3}
-  m_Name: LongSkinny
+  m_Name: BasicFarm
   m_EditorClassIdentifier: 
-  nameString: LongSkinny
+  nameString: Farm
   prefab: {fileID: 6570013989547619879, guid: 1a4b0b12027ea3f4282d8183fd886db9, type: 3}
   visual: {fileID: 1542502072602759919, guid: 8f570be72bb3b104dbfe9824f37fadbd, type: 3}
   width: 4
   height: 1
   cost: 0
-  buildingJob: {fileID: 1878889730170064821, guid: 107d2b112a835e14bb81edfcc00e7fd5, type: 3}
+  buildingJob: {fileID: 11400000, guid: d4048c3e23af2e74eadc426a3665aa43, type: 2}
+  compatibleUtensils: []
+  numUtensilSlots: 0
