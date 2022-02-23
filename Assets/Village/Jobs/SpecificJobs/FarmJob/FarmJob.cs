@@ -11,7 +11,8 @@ public class FarmJob : JobGameObject
         jobProgress += jobType.progressIncrement;
         if(jobProgress >= 100f) {
             Debug.Log("Produced: " + foodProduced.foodName);
-            FoodGameObject.CreateFoodObject(building.transform.position, foodProduced);
+            FoodGameObject food = FoodGameObject.CreateFoodObject(building.transform.position, foodProduced);
+            building.AddFoodObject(food);
             jobProgress = 0f;
         }
     }

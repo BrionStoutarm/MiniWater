@@ -10,4 +10,8 @@ public class BuildingPlaceableScriptableObject : PlaceableScriptableObject
     public JobScriptableObject buildingJob;
     public List<UtensilScriptableObject> compatibleUtensils;
     public int numUtensilSlots;
+
+    public bool canPreventSpoiling = false;
+    public bool hasCapacity;
+    public int maxCapacity=0;
 }

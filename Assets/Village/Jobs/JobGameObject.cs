@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class JobGameObject : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public abstract class JobGameObject : MonoBehaviour
     protected Villager workingVillager;
     protected float jobProgress = 0;
 
+    public event EventHandler<JobsDoneArgs> JobsDoneEvent;
+    public class JobsDoneArgs : EventArgs {
+
+    }
     public static JobGameObject CreateJobObject(JobScriptableObject jobType, BuildingPlacedObject building) {
         Transform placedObjectTransform = Instantiate(jobType.prefab, building.transform);
 

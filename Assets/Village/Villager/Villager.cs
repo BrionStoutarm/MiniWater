@@ -11,7 +11,7 @@ public class Villager : MonoBehaviour, ObjectUI {
     public Transform homeLocation;
     public float energyLevel = 100;
 
-    private BuildingPlacedObject currentBuilding;
+    private BuildingPlacedObject currentJobBuilding;
     private JobGameObject currentJob;
 
     public class UnassignVillagerEventArgs : EventArgs {
@@ -40,12 +40,14 @@ public class Villager : MonoBehaviour, ObjectUI {
             energyLevel -= amount;
     }
 
+    public BuildingPlacedObject CurrentJobBuilding() { return currentJobBuilding; }
+
     // Assign will have a task as well
     public void Assign(BuildingPlacedObject building) {
         Debug.Log("Assigning " + name + " to " + building.name);
-        currentBuilding = building;
+        currentJobBuilding = building;
         currentJob = building.GetJob();
-        SetDestination(building.transform.position);
+        SetDestination(building.pickupLocation.position);
     }
 
     public void Assign(Vector3 destination) {
@@ -54,13 +56,17 @@ public class Villager : MonoBehaviour, ObjectUI {
     }
 
     public void Unassign() {
-        if (UnassignVillagerEvent != null) { UnassignVillagerEvent(this, new UnassignVillagerEventArgs { workedBuilding = currentBuilding }); }
-        currentBuilding = null;
+        if (UnassignVillagerEvent != null) { UnassignVillagerEvent(this, new UnassignVillagerEventArgs { workedBuilding = currentJobBuilding }); }
+        currentJobBuilding = null;
         currentJob = null;
         Debug.Log(gameObject.name + " unassigned");
     }
 
-    private void SetDestination(Vector3 destination) {
+    public bool HasArrived() {
+        return Mathf.Abs(Vector3.Distance(transform.position, navMeshAgent.destination)) < 10f;
+    }
+
+    public void SetDestination(Vector3 destination) {
         navMeshAgent.destination = destination;
     }
 

@@ -136,7 +136,7 @@ public class GridBuildingSystem : MonoBehaviour {
             RaycastHit hit;
 
             if (Physics.Raycast(Camera.main.ScreenPointToRay(mousePosition), out hit)) {
-                Debug.Log(hit.point);
+                //Debug.Log(hit.point);
                 Vector3 hitPoint = hit.point;
                 //hitPoint.y = 0f;
 
@@ -219,6 +219,11 @@ public class GridBuildingSystem : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Alpha3)) {
             enabled = true;
             currentPlaceBuilding = buildingTypeList[2];
+            if (OnSelectedBuildingChanged != null) OnSelectedBuildingChanged(this, new OnSelectedBuildingChangedArgs { });
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4)) {
+            enabled = true;
+            currentPlaceBuilding = buildingTypeList[3];
             if (OnSelectedBuildingChanged != null) OnSelectedBuildingChanged(this, new OnSelectedBuildingChangedArgs { });
         }
     }

@@ -16,6 +16,8 @@ public class VillageManager : MonoBehaviour {
     public List<Villager> villagerList;
     private Queue<Villager> inactiveVillagers;
 
+    private List<BuildingPlacedObject> buildingList;
+
     private Villager selectedVillager;
     private BuildingPlacedObject selectedBuilding;
 
@@ -45,6 +47,7 @@ public class VillageManager : MonoBehaviour {
     private void Awake() {
         villagerList = new List<Villager>();
         inactiveVillagers = new Queue<Villager>();
+        buildingList = new List<BuildingPlacedObject>();
         s_instance = this;
         foodSupply = startFoodSupply;
         woodSupply = startWoodSupply;
@@ -66,6 +69,16 @@ public class VillageManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public List<BuildingPlacedObject> BuildingsWithFoodToBeStored() {
+        List<BuildingPlacedObject> retList = new List<BuildingPlacedObject>();
+        foreach(BuildingPlacedObject building in buildingList) {
+            if (building.HasFoodWaiting()) {
+                retList.Add(building);
+            }
+        }
+        return retList;
     }
 
     public static void CreateVillager() {
@@ -98,25 +111,26 @@ public class VillageManager : MonoBehaviour {
     void HandlePlacedBuilding(object sender, GridBuildingSystem.OnPlacedBuildingArgs args) {
 
         if (OnResourceAmountChange != null) { OnResourceAmountChange(this, new OnResourceAmountChangeArgs { foodSupply = foodSupply, waterSupply = waterSupply, woodSupply = woodSupply, metalSupply = metalSupply }) ; }
+        buildingList.Add(args.placedObject);
     }
 
     void HandleSelectedVillager(object sender, ClickSelectController.SelectedVillagerArgs args) {
         selectedVillager = args.selectedVillager;
         if (selectedVillager != null) {
-            Debug.Log("Selected Villager: " + selectedVillager.name);
+            //Debug.Log("Selected Villager: " + selectedVillager.name);
         }
         else {
-            Debug.Log("Deselect Villager");
+            //Debug.Log("Deselect Villager");
         }
     }
 
     void HandleSelectedBuilding(object sender, ClickSelectController.SelectedBuildingArgs args) { 
         selectedBuilding = args.selectedBuilding;
         if(selectedBuilding != null) {
-            Debug.Log("Selected building: " + selectedBuilding.name);
+            //Debug.Log("Selected building: " + selectedBuilding.name);
         }
         else {
-            Debug.Log("Deselect building");
+            //Debug.Log("Deselect building");
         }
     }
 }

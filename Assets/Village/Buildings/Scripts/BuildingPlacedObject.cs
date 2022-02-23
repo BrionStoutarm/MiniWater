@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIDa
     List<UtensilScriptableObject> compatibleUtensils;
     BuildingPlaceableScriptableObject buildingType;
 
+    List<FoodGameObject> storedFood;
+    public Transform pickupLocation; 
     bool isTested = false;
     public static BuildingPlacedObject CreateBuilding(Vector3 worldPosition, Vector2Int origin, PlaceableScriptableObject.Dir dir, BuildingPlaceableScriptableObject buildingType, int cellScale) {
         Transform placedObjectTransform = Instantiate(buildingType.prefab, worldPosition, Quaternion.Euler(0, buildingType.GetRotationAngle(dir), 0));
@@ -26,6 +29,8 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIDa
         placedObject.buildingJob = JobGameObject.CreateJobObject(buildingType.buildingJob, placedObject);
         placedObject.name = "Building: " + origin.ToString();
 
+        if (buildingType.hasCapacity)
+            placedObject.storedFood = new List<FoodGameObject>();
 
         return placedObject;
     }
@@ -36,6 +41,19 @@ public class BuildingPlacedObject : PlacedObject, ObjectUI, BuildingListItemUIDa
         if(Input.GetKeyDown(KeyCode.Space)) {
             TestUtensils();
         }
+    }
+
+    public bool CanAddFood() { return buildingType.hasCapacity && storedFood.Count < buildingType.maxCapacity; }
+    public bool HasStoredFood() { return buildingType.hasCapacity && storedFood.Count > 0; }
+    public bool HasFoodWaiting() { return HasStoredFood() && !buildingType.canPreventSpoiling; }
+    public void AddFoodObject(FoodGameObject food) {
+        storedFood.Add(food);
+    }
+
+    public FoodGameObject GetNextFoodObject() {
+        FoodGameObject retFood = storedFood[0];
+        storedFood.Remove(retFood);
+        return retFood;
     }
 
     private void WorkJob() {
