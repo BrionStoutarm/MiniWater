@@ -21,3 +21,6 @@ MonoBehaviour:
   buildingJob: {fileID: 11400000, guid: d4048c3e23af2e74eadc426a3665aa43, type: 2}
   compatibleUtensils: []
   numUtensilSlots: 0
+  canPreventSpoiling: 0
+  hasCapacity: 1
+  maxCapacity: 4

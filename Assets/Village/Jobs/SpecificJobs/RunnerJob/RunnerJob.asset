@@ -18,4 +18,4 @@ MonoBehaviour:
   progressIncrement: 0
   energyCost: 0
   requiresUtensils: 0
-  prefab: {fileID: 0}
+  prefab: {fileID: 2917995045076934285, guid: f0f63aca7b14d4f4ba63feb2ca521bde, type: 3}

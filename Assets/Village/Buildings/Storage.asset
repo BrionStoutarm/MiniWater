@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: Storage
   m_EditorClassIdentifier: 
   nameString: 
-  prefab: {fileID: 0}
-  visual: {fileID: 0}
-  width: 0
-  height: 0
+  prefab: {fileID: 1739994808063963242, guid: 1f24ec7365b0da74c80fe5e7b8c91a7c, type: 3}
+  visual: {fileID: 946062082727932066, guid: 7b631c407e4824d47b1b13c693b03b62, type: 3}
+  width: 2
+  height: 2
   cost: 0
-  buildingJob: {fileID: 0}
+  buildingJob: {fileID: 11400000, guid: be91343d69b64074eab984654f450131, type: 2}
   compatibleUtensils: []
   numUtensilSlots: 0
+  canPreventSpoiling: 1
+  hasCapacity: 1
+  maxCapacity: 50
